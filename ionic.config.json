@@ -1,0 +1,7 @@
+{
+  "name": "SnakeGame",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
