@@ -1,0 +1,6 @@
+{
+	"appId": "com.bingzingping.snakegame",
+	"appName": "SnakeGame",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

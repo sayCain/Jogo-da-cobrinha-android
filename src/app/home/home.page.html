@@ -1,20 +1,139 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content forceOverscroll="false" style="--offset-bottom: -20px !important;">
+  <div class="mainMenu" *ngIf="isPlaying == 0">
+    <div>
+      <div class="startGameToolbar">
+        <ion-button shape="round" color="light" (click)="showSettings()"><ion-icon name="settings-outline"></ion-icon></ion-button>
+      </div>
+      <img src="assets/cs-logo-full-white.png" alt="" />
+    </div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="-8 -8 64 84"
+      shape-rendering="crispEdges"
+    >
+      <defs>
+        <pattern
+          id="pattern"
+          width="8"
+          height="8"
+          patternUnits="userSpaceOnUse"
+          x="-4"
+          y="-4"
+        >
+          <path d="M 0 0 L8 0 8 8 0 8 z" fill="none"></path>
+        </pattern>
+      </defs>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <g
+        class="snake-group"
+        stroke-linejoin="miter"
+        stroke-linecap="square"
+        stroke-width="8"
+        fill="none"
+      >
+        <path class="dot dot-1" d="M28,48 l8,0z" />
+        <path class="dot dot-2" d="M-4,48 l8,0z" />
+        <path class="dot dot-3" d="M4,16 l8,0z" />
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        <path class="snake" d="M0 16 h48 v16 H32 v32 H0 V48 h16 V0 H0 v16" />
+      </g>
+
+      <rect
+        x="-4.5"
+        y="-4.5"
+        width="57"
+        height="73"
+        fill="url(#pattern)"
+      ></rect>
+    </svg>
+    <ion-button color="light" (click)="startGame()">Start</ion-button>
+    
+  </div>
+  <div class="mainMenu" *ngIf="isPlaying == 2">
+    <div class="endGameToolbar">
+      <ion-button shape="round" color="light" (click)="showMenu()"><ion-icon name="home-outline"></ion-icon></ion-button>
+      <ion-button shape="round" color="light" (click)="showSettings()"><ion-icon name="settings-outline"></ion-icon></ion-button>
+    </div>
+    <div>
+      <ng-lottie 
+      width="300px"
+      height="300px"
+      [options]="egLottieConfig"
+      ></ng-lottie>
+    </div>
+    <div class="endGameScore">{{score}}</div>
+    <ion-button color="light" (click)="startGame()">Play Again</ion-button>
+  </div>
+  <div class="mainMenu" *ngIf="isPlaying == 3">
+    <div class="settingsToolbar">
+      <ion-button shape="round" color="light" (click)="hideSettings()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+    </div>
+    <div>
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            Sound Effects
+          </ion-label>
+          <ion-toggle color="light" slot="end" [(ngModel)]="sfx" (ionChange)="changeSettings(1)"></ion-toggle>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>
+            Music
+          </ion-label>
+          <ion-toggle color="light" slot="end" [(ngModel)]="music" (ionChange)="changeSettings(2)"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Vibration
+          </ion-label>
+          <ion-toggle color="light" slot="end" [(ngModel)]="vibration" (ionChange)="changeSettings(3)"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Controls</ion-label>
+          <ion-select [value]="gestureControl" (ionChange)="changeSettings(4)">
+            <ion-select-option [value]="true">Gestures</ion-select-option>
+            <ion-select-option [value]="false">Buttons</ion-select-option>
+          </ion-select>
+        </ion-item>
+      
+      </ion-list>
+    </div>
+    <div style="height: 200px; color:#fff;">
+      <h3>Special Thanks</h3>
+      <span><b>@jackrugile</b> on CodePen for Game Logic</span><br>
+      <span><b>@tswone</b> on CodePen for D-Controls</span><br>
+      <span><b>Pix</b> on Youtube for Music (A Lonely Cherry Tree 🌸)</span> 
+    </div>
+  </div>
+  <div class="content">
+    <canvas #myCanvas style="position: absolute; width: 100%; bottom: 0;" *ngIf="music"></canvas>
+    <div class="howTo" *ngIf="isPlaying == 1 && howToScreen" (click)="closeHowTo()">
+      <div>
+        Swipe on the screen to move the Snake
+      </div>
+      <ng-lottie 
+      width="300px"
+      height="300px"
+      [options]="howtoLottieConfig"
+      ></ng-lottie>
+      <div>
+        Tap anywhere to start
+      </div>
+    </div>
+    <div class="gestureArea" id="contentM" *ngIf="gestureControl"></div>
+    <div class="score" id="score">Score: 0</div>
+    <div class="stage" [class.stageMiddle]="gestureControl" id="stage"></div>
+    <div class="buttons" id="buttons">
+      <div class="set" *ngIf="!gestureControl">
+        <nav class="d-pad">
+          <a class="up" (click)="buttonPressUp()"></a>
+          <a class="right" (click)="buttonPressRight()"></a>
+          <a class="down" (click)="buttonPressDown()"></a>
+          <a class="left" (click)="buttonPressLeft()"></a>
+        </nav>
+      </div>
+    </div>
   </div>
 </ion-content>

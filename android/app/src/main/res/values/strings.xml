@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SnakeGame</string>
+    <string name="title_activity_main">SnakeGame</string>
+    <string name="package_name">com.bingzingping.snakegame</string>
+    <string name="custom_url_scheme">com.bingzingping.snakegame</string>
+    <string name="admob_app_id">ca-app-pub-1298612627998752~8092039988</string>
+</resources>

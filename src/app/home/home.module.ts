@@ -6,13 +6,23 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
+import { LottieModule } from 'ngx-lottie';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
+
+export function playerFactory() {
+  return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
+}
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    LottieModule.forRoot({ player: playerFactory })
+  ],
+  providers: [
+    Vibration
   ],
   declarations: [HomePage]
 })
