@@ -1,25 +1,14 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core'; // ViewChild e ElementRef removidos se não mais usados
 import { Gesture, GestureController } from '@ionic/angular';
 import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 import { AdMob } from '@capacitor-community/admob';
 import { BannerAdOptions, BannerAdSize, BannerAdPosition, BannerAdPluginEvents, AdMobBannerSize } from '@capacitor-community/admob';
 
-
-
 export async function AdMobInitialize(): Promise<void> {
   const { status } = await AdMob.trackingAuthorizationStatus();
 
   if (status === 'notDetermined') {
-    /**
-     * If you want to explain TrackingAuthorization before showing the iOS dialog,
-     * you can show the modal here.
-     * ex)
-     * const modal = await this.modalCtrl.create({
-     *   component: RequestTrackingPage,
-     * });
-     * await modal.present();
-     * await modal.onDidDismiss();  // Wait for close modal
-     **/
+
   }
  
   AdMob.initialize({
@@ -29,11 +18,11 @@ export async function AdMobInitialize(): Promise<void> {
   });
 
   AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
-    // Subscribe Banner Event Listener
+    // Inscrever-se no Ouvinte de Eventos do Banner
   });
 
   AdMob.addListener(BannerAdPluginEvents.SizeChanged, (size: AdMobBannerSize) => {
-    // Subscribe Change Banner Size
+    // Inscrever-se na Mudança de Tamanho do Banner
   });
 
   const options: BannerAdOptions = {
@@ -64,8 +53,8 @@ export class HomePage {
   score = 0;
   previousState = 0;
 
-  sfx = true;
-  music = true;
+  sfx = true; // Permanece para compatibilidade com HTML, mas será inerte
+  music = true; // Permanece para compatibilidade com HTML, mas será inerte
   vibration = true;
 
   howToScreen = true;
@@ -85,26 +74,20 @@ export class HomePage {
   }
 
   GESTURE_CONTROL_KEY = "gestureControl";
-  SFX_KEY = "sfx";
-  MUSIC_KEY = "music";
+  // SFX_KEY removido
+  // MUSIC_KEY removido
   VIBRATION_KEY = "vibration";
   HOWTO_KEY = "howto";
 
-  bgMusic: any; 
-
-  @ViewChild('myCanvas')
-  myCanvas: ElementRef<HTMLCanvasElement>;
-
+  // bgMusic removido
+  // myCanvas e @ViewChild removidos
 
   constructor(private gestureCtrl: GestureController, private vibrtn: Vibration) {
     
     AdMobInitialize();
 
-    const sfx = localStorage.getItem(this.SFX_KEY);
-    sfx ? this.sfx = JSON.parse(sfx) : this.sfx = true;
-
-    const music = localStorage.getItem(this.MUSIC_KEY);
-    music ? this.music = JSON.parse(music) : this.music = true;
+    // Carregamento de sfx do localStorage removido
+    // Carregamento de music do localStorage removido
 
     const vibration = localStorage.getItem(this.VIBRATION_KEY);
     vibration ? this.vibration = JSON.parse(vibration) : this.vibration = true;
@@ -115,33 +98,23 @@ export class HomePage {
     const howToScreen = localStorage.getItem(this.HOWTO_KEY);
     howToScreen ? this.howToScreen = JSON.parse(howToScreen) : this.howToScreen = true;
 
-
-    this.bgMusic = new Audio('assets/bg-music-snake.mp3');
-    this.bgMusic.loop = true;
-
-    this.setMusic();
-
+    // Inicialização de bgMusic removida
+    // Chamada para setMusic() removida
   }
 
-  setMusic () {
-    if(this.music){
-      this.bgMusic.play();
-    } else {
-      this.bgMusic.pause();
-      this.bgMusic.currentTime = 0;
-    };
-  }
+  // Método setMusic() removido
 
   doVibrate (value) {
     if(this.vibration) this.vibrtn.vibrate(value);
   }
 
   getPoint () {
-    if(this.sfx){
-      var gP = new Audio('assets/score.mp3');
-      gP.volume = 0.4;
-      gP.play();
-    }
+    // Lógica de reprodução de áudio removida
+    // if(this.sfx){
+    //   var gP = new Audio('assets/score.mp3');
+    //   gP.volume = 0.4;
+    //   gP.play();
+    // }
   }
 
   ionViewDidEnter(){ 
@@ -152,7 +125,7 @@ export class HomePage {
   startGame () {
     this.score = 0;
     this.isPlaying = 1;
-    if(this.music) this.audioVisualizer();
+    // Chamada para audioVisualizer removida: if(this.music) this.audioVisualizer();
     if(this.gestureControl) {
       this.enableGestures();
     }
@@ -177,7 +150,6 @@ export class HomePage {
   hideSettings () {
     this.isPlaying = this.previousState;
   }
-
 
   enableGestures () {
     this.gestureX = this.gestureCtrl.create({
@@ -222,7 +194,6 @@ export class HomePage {
     }
 
     // console.log(detail);
-    
   }
 
   changeControls () {
@@ -233,11 +204,10 @@ export class HomePage {
   changeSettings (type) {
     switch (type) {
       case 1:
-        localStorage.setItem(this.SFX_KEY,this.sfx.toString());
+        // Lógica de configuração de SFX e localStorage.setItem(this.SFX_KEY,...) removida
         break;
       case 2:
-        this.setMusic();
-        localStorage.setItem(this.MUSIC_KEY,this.music.toString());
+        // Lógica de configuração de Música (setMusic) e localStorage.setItem(this.MUSIC_KEY,...) removida
         break;
       case 3:
         localStorage.setItem(this.VIBRATION_KEY,this.vibration.toString());
@@ -250,7 +220,6 @@ export class HomePage {
         break;
     }
   }
-
 
   requestAnimationFrame(){
     for (var x = 0; x < this.vendors.length && !window.requestAnimationFrame; ++x) {
@@ -319,13 +288,12 @@ export class HomePage {
 
   gInit() {
     
-
       /*================================================
-
-      Math
-
+    
+      Matemática
+    
       ================================================*/
-      var THAT = this;
+      var THAT = this; // THAT (this) ainda é usado por gInit e é chamado em ionViewDidEnter
       THAT.g.m = Math;
       THAT.g.mathProps =
         'E LN10 LN2 LOG2E LOG10E PI SQRT1_2 SQRT2 abs acos asin atan ceil cos exp floor log round sin sqrt tan atan2 pow max min'.split(
@@ -336,11 +304,10 @@ export class HomePage {
       }
       THAT.g.m.TWO_PI = THAT.g.m.PI * 2;
 
-
       /*================================================
-
-      Miscellaneous
-
+    
+      Diversos
+    
       ================================================*/
 
       THAT.g.isset = function (prop) {
@@ -354,11 +321,10 @@ export class HomePage {
       };
 
       /*================================================
-
-      Group
-
+    
+      Grupo
+    
       ================================================*/
-
 
       THAT.g.Group = function () {
         this.collection = [];
@@ -397,12 +363,11 @@ export class HomePage {
         }
       };
 
-
       THAT.g.util = {};
 
       /*================================================
     
-      Random
+      Aleatório
     
       ================================================*/
     
@@ -414,11 +379,10 @@ export class HomePage {
         return THAT.g.m.floor(THAT.g.m.random() * (max - min + 1)) + min;
       };
 
-
       /*================================================
-
-      State
-
+    
+      Estado
+    
       ================================================*/
 
       THAT.g.states = {};
@@ -441,9 +405,9 @@ export class HomePage {
       };
 
       /*================================================
-
-      Time
-
+    
+      Tempo
+    
       ================================================*/
 
       THAT.g.Time = function () {
@@ -470,11 +434,10 @@ export class HomePage {
         this.tick++;
       };
 
-
       /*================================================
-
-      Grid Entity
-
+    
+      Entidade Grade
+    
       ================================================*/
 
       THAT.g.Grid = function (cols, rows) {
@@ -497,11 +460,10 @@ export class HomePage {
         this.tiles[x][y] = val;
       };
 
-
       /*================================================
-
-      Board Tile Entity
-
+    
+      Entidade Peça do Tabuleiro
+    
       ================================================*/
 
       THAT.g.BoardTile = function (opt) {
@@ -591,13 +553,11 @@ export class HomePage {
         this.elem.className = 'tile ' + classString;
       };
 
-
       /*================================================
-
-      Snake Tile Entity
-
+    
+      Entidade Peça da Cobra
+    
       ================================================*/
-
 
       THAT.g.SnakeTile = function (opt) {
         this.parentState = opt.parentState;
@@ -683,11 +643,10 @@ export class HomePage {
         this.elem.style.borderRadius = this.borderRadius;
       };
 
-
       /*================================================
-
-      Food Tile Entity
-
+    
+      Entidade Peça de Comida
+    
       ================================================*/
 
       THAT.g.FoodTile = function (opt) {
@@ -748,9 +707,9 @@ export class HomePage {
       };
 
       /*================================================
-
-      Snake Entity
-
+    
+      Entidade Cobra
+    
       ================================================*/
 
       THAT.g.Snake = function (opt) {
@@ -781,7 +740,7 @@ export class HomePage {
         this.justAteTickMax = 1;
         this.justAteTickChange = 0.05;
     
-        // sync data grid of the play state
+        // sincronizar grade de dados do estado de jogo
         var x = this.tiles.length;
     
         while (x--) {
@@ -842,10 +801,10 @@ export class HomePage {
     
         this.updateTick += this.parentState.time.ndelta;
         if (this.updateTick >= this.updateTickMax) {
-          // reset the update timer to 0, or whatever leftover there is
+          // redefinir o temporizador de atualização para 0, ou o que sobrar
           this.updateTick = this.updateTick - this.updateTickMax;
     
-          // rotate snake block array
+          // rotacionar array de blocos da cobra
           this.tiles.unshift(
             new THAT.g.SnakeTile({
               parentState: this.parentState,
@@ -865,7 +824,7 @@ export class HomePage {
             this.last.col + this.last.row * this.parentState.cols
           ].classes.pressed = 2;
     
-          // sync data grid of the play state
+          // sincronizar grade de dados do estado de jogo
           var i = this.tiles.length;
     
           while (i--) {
@@ -877,7 +836,7 @@ export class HomePage {
           }
           this.parentState.grid.set(this.last.col, this.last.row, 'empty');
     
-          // move the snake's head
+          // mover a cabeça da cobra
           if (this.dir == 'n') {
             this.currDir = 'n';
             this.tiles[0].row -= 1;
@@ -892,7 +851,7 @@ export class HomePage {
             this.tiles[0].col += 1;
           }
     
-          // wrap walls
+          // atravessar paredes
           this.wallFlag = false;
           if (this.tiles[0].col >= this.parentState.cols) {
             this.tiles[0].col = 0;
@@ -911,7 +870,7 @@ export class HomePage {
             this.wallFlag = true;
           }
     
-          // check death by eating self
+          // verificar morte por comer a si mesma
           if (
             this.parentState.grid.get(this.tiles[0].col, this.tiles[0].row) ==
             'snake'
@@ -920,12 +879,12 @@ export class HomePage {
             clearTimeout(this.foodCreateTimeout);
           }
     
-          // check eating of food
+          // verificar se comeu a comida
           if (
             this.parentState.grid.get(this.tiles[0].col, this.tiles[0].row) ==
             'food'
           ) {
-            THAT.getPoint();
+            THAT.getPoint(); // Chamada para getPoint mantida, mas getPoint não tocará som
             THAT.doVibrate(200);
             this.tiles.push(
               new THAT.g.SnakeTile({
@@ -959,7 +918,7 @@ export class HomePage {
             }, 300);
           }
     
-          // check death by eating self
+          // verificar morte por comer a si mesma
           if (this.deathFlag) {
             THAT.endGame();
             THAT.doVibrate(500);
@@ -967,7 +926,7 @@ export class HomePage {
           }
         }
     
-        // update individual snake tiles
+        // atualizar peças individuais da cobra
         var i = this.tiles.length;
         while (i--) {
           this.tiles[i].update(i);
@@ -981,7 +940,7 @@ export class HomePage {
       };
     
       THAT.g.Snake.prototype.render = function () {
-        // render individual snake tiles
+        // renderizar peças individuais da cobra
         var i = this.tiles.length;
         while (i--) {
           this.tiles[i].render(i);
@@ -989,9 +948,9 @@ export class HomePage {
       };
 
       /*================================================
-
-      Food Entity
-
+    
+      Entidade Comida
+    
       ================================================*/
 
       THAT.g.Food = function (opt) {
@@ -1033,7 +992,7 @@ export class HomePage {
       };
     
       THAT.g.Food.prototype.update = function () {
-        // update food tile
+        // atualizar peça de comida
         this.tile.update();
     
         if (this.birthTick > 0) {
@@ -1042,7 +1001,7 @@ export class HomePage {
           this.birthTick = 0;
         }
     
-        // sync data grid of the play state
+        // sincronizar grade de dados do estado de jogo
         this.parentState.grid.set(this.tile.col, this.tile.row, 'food');
       };
     
@@ -1051,9 +1010,9 @@ export class HomePage {
       };
 
       /*================================================
-
-      Play State
-
+    
+      Estado de Jogo (Play)
+    
       ================================================*/
 
       function StatePlay() {
@@ -1225,9 +1184,9 @@ export class HomePage {
       THAT.g.addState(new StatePlay());
 
       /*================================================
-
-      Game
-
+    
+      Jogo
+    
       ================================================*/
 
       THAT.g.config = {
@@ -1236,8 +1195,6 @@ export class HomePage {
         state: 'play',
       };
 
-      
-    
       THAT.g.setState(THAT.g.config.state);
     
       THAT.g.time = new THAT.g.Time();
@@ -1247,93 +1204,14 @@ export class HomePage {
         THAT.g.states[THAT.g.state].step();
         THAT.g.time.update();
       };
-
-      
       
     setTimeout(() => {
       THAT.g.step();
     }, 100);
       // window.addEventListener('load', THAT.g.step, false);
-
   }
 
-  audioVisualizer () {
-    var THAT = this;
-    function audioVisual () {
-      var audioCtx = new (window.AudioContext)();
-      var analyser = audioCtx.createAnalyser();
-  
-      var source = audioCtx.createMediaElementSource(THAT.bgMusic);
-      source.connect(analyser);
-      source.connect(audioCtx.destination);
-
-      analyser.fftSize = 2048;
-      var bufferLength = analyser.frequencyBinCount;
-      var dataArray = new Uint8Array(bufferLength);
-
-      var canvas = THAT.myCanvas.nativeElement;
-      var canvasCtx = THAT.myCanvas.nativeElement.getContext("2d");
-      var WIDTH = canvas.width;
-      var HEIGHT = canvas.height;
-
-      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-
-      // var frequencyData = new Uint8Array(200);
-
-      // function renderCh() {
-      //   requestAnimationFrame(renderCh);
-      //   analyser.getByteFrequencyData(frequencyData);
-      //   console.log(frequencyData);
-        
-      // }
-
-      // renderCh();
-      
-
-      function draw() {
-        var drawVisual = requestAnimationFrame(draw);
-        analyser.getByteTimeDomainData(dataArray);
-
-        // console.log(dataArray);
-        
-        canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-        canvasCtx.fillStyle = 'rgb(0, 0, 0, 0)';
-        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-
-        canvasCtx.lineWidth = 2;
-        canvasCtx.strokeStyle = 'rgb(200, 200, 200)';
-        canvasCtx.beginPath();
-
-        var sliceWidth = WIDTH * 1.0 / bufferLength;
-        var x = 0;
-
-        for(var i = 0; i < bufferLength; i++) {
-
-          var v = dataArray[i] / 128.0;
-          var y = v * HEIGHT/2;
-  
-          if(i === 0) {
-            canvasCtx.moveTo(x, y);
-          } else {
-            canvasCtx.lineTo(x, y);
-          }
-  
-          x += sliceWidth;
-        }
-
-
-      canvasCtx.lineTo(canvas.width, canvas.height/2);
-      canvasCtx.stroke();
-
-
-      }
-
-      draw();
-      
-    }
-
-    audioVisual();
-  }
+  // Método audioVisualizer() removido
 
   buttonPressUp () {
     this.g.currentState().keys.up = 1;
@@ -1350,5 +1228,4 @@ export class HomePage {
   buttonPressRight () {
     this.g.currentState().keys.right = 1;
   }
-
 }

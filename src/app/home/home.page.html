@@ -47,7 +47,7 @@
         fill="url(#pattern)"
       ></rect>
     </svg>
-    <ion-button color="light" (click)="startGame()">Start</ion-button>
+    <ion-button color="light" (click)="startGame()">Jogar</ion-button>
     
   </div>
   <div class="mainMenu" *ngIf="isPlaying == 2">
@@ -63,7 +63,7 @@
       ></ng-lottie>
     </div>
     <div class="endGameScore">{{score}}</div>
-    <ion-button color="light" (click)="startGame()">Play Again</ion-button>
+    <ion-button color="light" (click)="startGame()">Jogar novamente</ion-button>
   </div>
   <div class="mainMenu" *ngIf="isPlaying == 3">
     <div class="settingsToolbar">
@@ -73,45 +73,39 @@
       <ion-list>
         <ion-item>
           <ion-label>
-            Sound Effects
+            Efeitos sonoros
           </ion-label>
           <ion-toggle color="light" slot="end" [(ngModel)]="sfx" (ionChange)="changeSettings(1)"></ion-toggle>
         </ion-item>
         
         <ion-item>
           <ion-label>
-            Music
+            Musica
           </ion-label>
           <ion-toggle color="light" slot="end" [(ngModel)]="music" (ionChange)="changeSettings(2)"></ion-toggle>
         </ion-item>
         <ion-item>
           <ion-label>
-            Vibration
+            Vibracao
           </ion-label>
           <ion-toggle color="light" slot="end" [(ngModel)]="vibration" (ionChange)="changeSettings(3)"></ion-toggle>
         </ion-item>
         <ion-item>
-          <ion-label>Controls</ion-label>
+          <ion-label>Controles</ion-label>
           <ion-select [value]="gestureControl" (ionChange)="changeSettings(4)">
-            <ion-select-option [value]="true">Gestures</ion-select-option>
-            <ion-select-option [value]="false">Buttons</ion-select-option>
+            <ion-select-option [value]="true">Gestos</ion-select-option>
+            <ion-select-option [value]="false">Botoes</ion-select-option>
           </ion-select>
         </ion-item>
       
       </ion-list>
-    </div>
-    <div style="height: 200px; color:#fff;">
-      <h3>Special Thanks</h3>
-      <span><b>@jackrugile</b> on CodePen for Game Logic</span><br>
-      <span><b>@tswone</b> on CodePen for D-Controls</span><br>
-      <span><b>Pix</b> on Youtube for Music (A Lonely Cherry Tree 🌸)</span> 
     </div>
   </div>
   <div class="content">
     <canvas #myCanvas style="position: absolute; width: 100%; bottom: 0;" *ngIf="music"></canvas>
     <div class="howTo" *ngIf="isPlaying == 1 && howToScreen" (click)="closeHowTo()">
       <div>
-        Swipe on the screen to move the Snake
+       Deslize na tela para mover a cobrinha
       </div>
       <ng-lottie 
       width="300px"
@@ -119,7 +113,7 @@
       [options]="howtoLottieConfig"
       ></ng-lottie>
       <div>
-        Tap anywhere to start
+       Aperte para começar
       </div>
     </div>
     <div class="gestureArea" id="contentM" *ngIf="gestureControl"></div>
